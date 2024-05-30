@@ -1,0 +1,114 @@
+a,
+form {
+  text-decoration: none;
+}
+
+.sidebar-nav {
+  margin-top: 20px;
+  padding: 100;
+  list-style: none;
+  text-decoration: none;
+}
+
+#logout-form {
+  display: inline;
+}
+
+#logout-form button {
+  padding: 0;
+  margin: 0;
+}
+
+/* 1 */
+body {
+  font-family: Arial, sans-serif;
+}
+
+/* 白色主題 */
+body.white-theme {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* 黑色主題 */
+body.black-theme {
+  background-color: #343a40;
+  color: #ffffff;
+}
+
+/* 黃色主題 */
+body.yellow-theme {
+  background-color: #fffacd;
+  color: #000000;
+}
+
+header,
+footer {
+  padding: 10px;
+  text-align: center;
+}
+
+body.white-theme header,
+body.white-theme footer {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+body.black-theme header,
+body.black-theme footer {
+  background-color: #1c1c1c;
+  color: #ffffff;
+}
+
+body.yellow-theme header,
+body.yellow-theme footer {
+  background-color: #ffd700;
+  color: #000000;
+}
+
+button {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+body.white-theme button {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+body.black-theme button {
+  background-color: #1c1c1c;
+  color: #ffffff;
+}
+
+body.yellow-theme button {
+  background-color: #ffd700;
+  color: #000000;
+}
+
+.custom-hr {
+  width: 90%;
+  border: none;
+  border-top: 2px solid #add8e6;
+  margin: 10 auto;
+}
+
+
+/* 側欄收合 */
+#sidebar {
+  transition: all 0.3s;
+}
+
+#sidebar.active {
+  margin-left: -25%;
+  /* 左移 */
+}
+
+#sidebarCollapseOutside {
+  display: none;
+}
+
+#sidebar.active+main #sidebarCollapseOutside {
+  display: inline-block;
+  /* 主畫面按鈕 */
+}

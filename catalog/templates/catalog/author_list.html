@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+
+{% block title %}<title>Authors_list</title>{% endblock %}
+
+{% block content %}
+  <h1 class="border-start border-info border-5" style="padding-left: 10px;">Authors List</h1>
+  <hr>
+  {% if author_list %}
+    <ul>
+      {% for author in author_list %}
+      <li>
+        <a href="{{ author.get_absolute_url }}">{{ author }}</a>
+        <!-- ({{author}}) -->
+      </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no authors in the library.</p>
+  {% endif %}
+{% endblock %}
+
+

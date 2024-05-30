@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% block title %}
+  <title>Local Library</title>
+  {% endblock %}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
+  <!-- Add additional CSS in static file -->
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
+<body class="white-theme">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 fluid-bg sidebar position-relative text-center" id="sidebar">
+        {% block sidebar %}
+        <div>
+          <button type="button" class="btn btn-primary position-absolute top-50 end-0 translate-middle-y"
+            id="sidebarCollapseInside">＜＜收合</button>
+          <ul class="sidebar-nav">
+            <div class="card" style="width: 18rem;">
+              <div class="card-header" style="color: black;">
+                Menu
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="{% url 'index' %}">Home</a></li>
+                <li class="list-group-item"><a href="{% url 'books' %}">All books</a></li>
+                <li class="list-group-item"><a href="{% url 'authors' %}">All authors</a></li>
+                <li class="list-group-item"><a href="{% url '123' %}">Renewal date setting</a></li>
+              </ul>
+            </div>
+            <div class="card" style="width: 18rem;">
+              {% if user.is_authenticated %}
+              <div class="card-header" style="color: black;">
+                <li>User: {{ user.get_username }}</li>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="{% url 'my-borrowed' %}">My Borrowed</a></li>
+                <li class="list-group-item">
+                  <form id="logout-form" method="post" action="{% url 'logout' %}?next={{ request.path }}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">&nbsp Logout &nbsp</button>
+                  </form>
+                  {% else %}
+                  <div class="card-header" style="color: black;">
+                <li>User:( )</li>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"> <button class="btn btn-primary">
+                  <a href="{% url 'login' %}?next={{ request.path }}" style="color: white;">&nbsp Login &nbsp</a>
+                </button>
+              </li>
+              </li>
+              {% endif %}
+              </li>
+            </ul>
+        </div>
+        </ul>
+      </div>
+      {% endblock %}
+    </div>
+    {% comment %} <!--展開按鈕--------------------> {% endcomment %}
+    <div class="col-sm-1 position-relative text-right">
+      <img src="{% static 'img/images.png' %}" width="100" height="85" alt="My Image" >
+      <button type="button" class="btn btn-primary position-absolute top-50 translate-middle-y"
+        id="sidebarCollapseOutside" style="display: none;">展開 ＞＞</button>
+    </div>
+    {% comment %} <!-- 右列-- ---------------------------------------- -->
+    {% endcomment %}
+    <div class="col-sm-5 border-start border-end border-info">
+      {% block content %}
+      {% endblock %}
+      {% comment %} <!-- 翻頁--- ---------------------------------------- -->
+      {% endcomment %}
+      {% if is_paginated %}
+      <div class="pagination">
+        <span class="page-links">
+          {% if page_obj.has_previous %}
+          <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}"
+            class="btn btn-outline-success">previous</a>
+          {% endif %}
+          <span class="page-current"><a>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</a></span>
+          {% if page_obj.has_next %}
+          <a href="{{ request.path }}?page={{ page_obj.next_page_number }}" class="btn btn-outline-success">next</a>
+          {% endif %}
+        </span>
+      </div>
+      {% endif %}
+    </div>
+    {% comment %}<!--主題------------------->{% endcomment %}
+    <div class="col-sm-3 ">
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item ">
+          <h2 class="accordion-header" id="headingOne"><button class="accordion-button" type="button"
+              data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+              aria-controls="collapseOne">主題選擇</button></h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-primary" onclick="setTheme('white')">白色主題</button>
+                <button type="button" class="btn btn-primary" onclick="setTheme('black')">黑色主題</button>
+                <button type="button" class="btn btn-primary" onclick="setTheme('yellow')">黃色主題</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% comment %} <div class="col-sm-9 "></div> {% endcomment %}
+    {% comment %}<!---------------------------------------------->{% endcomment %}
+  </div>
+  </div>
+  {% block pagination %}
+  {% endblock %}
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+
+
+
+
+{% comment %}<!---------------------------------------------->{% endcomment %}
+{% comment %} {% comment %} <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-warning sidebar">
+  <button type="button" class="btn btn-primary" id="sidebarCollapseInside">收合</button>
+  <div></div>
+</nav> {% endcomment %}
+{% comment %} <button type="button" class="btn btn-primary" id="sidebarCollapseOutside"
+  style="display: none;">展開</button> {% endcomment %}
